@@ -39,7 +39,7 @@ df = df[df["Season"] == current_season]
 # Efficiency ratio: offensive efficiency divided by defensive efficiency.
 df["Efficiency_Ratio"] = df["Adjusted Offensive Efficiency"] / df["Adjusted Defensive Efficiency"]
 
-# Define major conferences (adjust as needed)
+# Define major conferences (this can be controversial lol)
 big_conferences = ["ACC", "SEC", "B12"]
 median_eff_ratio = df["Efficiency_Ratio"].median()
 
