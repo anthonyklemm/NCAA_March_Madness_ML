@@ -40,7 +40,7 @@ df.fillna(df.median(numeric_only=True), inplace=True)
 # Calculate an efficiency ratio
 df["Efficiency_Ratio"] = df["Adjusted Offensive Efficiency"] / df["Adjusted Defensive Efficiency"]
 
-# Define major conferences (adjust as needed)
+# Define major conferences (this can be a bit controversial lol)
 big_conferences = ["ACC", "SEC", "B12", "B10", "BE"]
 
 # Compute median efficiency ratio (from current season data)
@@ -150,35 +150,6 @@ def predict_matchup(team_A_name, team_B_name, model, data, sequence_length, feat
 
     predicted_winner = team_A_name if win_probability_A >= 0.5 else team_B_name
     return predicted_winner
-def plot_lstm_probability_heatmap(matchups, lstm_pred_probs, actual_results):
-    data = np.array([lstm_pred_probs, actual_results])
-
-    plt.figure(figsize=(12, 6))
-    sns.heatmap(data, annot=True, cmap='coolwarm', fmt=".3f", xticklabels=matchups, yticklabels=['Predicted', 'Actual'], cbar=True)
-    plt.xlabel('Matchups')
-    plt.title('LSTM Predicted vs Actual Probabilities')
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    plt.show()
-
-
-# Define interesting matchups manually (just examples, use actual matchups from your bracket)
-matchups = [
-    "Florida vs Norfolk State",
-    "Florida vs Duke",
-    "Creighton vs Louisville",
-    "Memphis vs Colorado State"
-]
-
-# Replace these with actual indices from your dataset matching these teams
-matchup_indices = [0, 1, 2, 3]  # Adjust this based on your actual data indices
-
-# Extract predicted probabilities and actual results from your existing arrays
-lstm_pred_probs = model.predict(X[matchup_indices]).flatten()
-actual_results = y[matchup_indices]
-
-# Call the heatmap visualization function
-plot_lstm_probability_heatmap(matchups, lstm_pred_probs, actual_results)
 
 def plot_matchup_predictions(matchups, team_A_probs, team_B_probs):
     import matplotlib.pyplot as plt
@@ -191,7 +162,6 @@ def plot_matchup_predictions(matchups, team_A_probs, team_B_probs):
     bars_A = ax.bar(x - width/2, team_A_probs, width, label='Team A', color='steelblue')
     bars_B = ax.bar(x + width/2, team_B_probs, width, label='Team B', color='saddlebrown')
 
-    # Add plain percentage labels (no annotations for winners)
     for bar in bars_A:
         height = bar.get_height()
         ax.annotate(f'{height:.4f}',
@@ -215,9 +185,9 @@ def plot_matchup_predictions(matchups, team_A_probs, team_B_probs):
 
 
 matchups = ["Florida vs Duke", "Florida vs Norfolk St", "Creighton vs Louisville"]
-team_A_probs = [0.4998, 0.9460, 0.4377]
+team_A_probs = [0.4998, 0.9460, 0.4377] #I got these from running the model against these matchups
 team_B_probs = [0.5002, 0.0540, 0.5623]
-actual_winners = ["Team B", "Team A", "Team A"]  # Optional: Only if you want green bars for correct picks
+
 
 plot_matchup_predictions(matchups, team_A_probs, team_B_probs)
 
